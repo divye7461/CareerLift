@@ -27,7 +27,14 @@ const ResumeAnalyzer = () => {
         method: "POST",
         body: formData,
       });
-      const data = await res.json();
+      const { url } = await res.json();
+      console.log("Uploaded to Cloudinary:", url);
+      const analysisRes = await fetch("/api/analyze-resume-backend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileUrl: url }),
+      });
+      const data = await analysisRes.json();
       console.log("Data Coming From Backend...", data);
       const analysis = data.analysis;
       if (!analysis) {
